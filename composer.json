@@ -1,0 +1,16 @@
+{
+    "name": "agavee/sso",
+    "type": "library",
+    "description": "Agavee SSO library",
+    "keywords": ["sso"],
+    "homepage": "http://agavee.com",
+    "authors": [
+        {
+            "name": "Claudio Beatrice",
+            "email": "claudio@agavee.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    }
+}
