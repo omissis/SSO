@@ -13,13 +13,13 @@ class Client
         $this->serverUrl = rtrim($serverUrl, '/') . '/';
     }
 
-    public function getToken($request, $email, $secret)
+    public function getToken($ip, $agent, $email, $secret)
     {
         list($ret, $body) = $this->request('sso/token', array(
             'secret' => $secret,
             'email'  => $email,
-            'agent'  => $request->server->get('HTTP_USER_AGENT'),
-            'ip'     => $request->getClientIp(),
+            'agent'  => $agent,
+            'ip'     => $ip,
         ));
 
         if (200 != $ret || empty($body)) {
