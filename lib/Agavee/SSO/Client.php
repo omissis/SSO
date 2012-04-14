@@ -10,6 +10,20 @@ class Client
 
     public function __construct($serverUrl)
     {
+        if (empty($serverUrl)) {
+            throw new \InvalidArgumentException("Invalid Server URL");
+
+        }
+
+        $mandatoryKeys = array('scheme', 'host', 'path');
+        $urlKeys = array_keys(parse_url($serverUrl));
+
+        foreach ($mandatoryKeys as $mandatoryKey) {
+            if (!in_array($mandatoryKey, $urlKeys)) {
+                throw new \UnexpectedValueException("Malformed Server URL: missing \"$mandatoryKey\" part");
+            }
+        }
+
         $this->serverUrl = rtrim($serverUrl, '/') . '/';
     }
 
@@ -77,7 +91,7 @@ class Client
         $missingParameters = array_diff($requiredParams, array_keys($params));
 
         if (!empty($missingParameters)) {
-            throw new \InvalidArgumentException(
+            throw new \UnexpectedValueException(
                 'The following parameters are missing: ' . implode(', ', $missingParameters)
             );
         }
