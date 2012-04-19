@@ -2,7 +2,9 @@
 
 namespace Agavee\Tests\SSO;
 
+use Agavee\SSO\Exception\InvalidTokenException;
 use Agavee\SSO\Client;
+use \Mockery as m;
 
 class ClientTest extends \PHPUnit_Framework_Testcase
 {

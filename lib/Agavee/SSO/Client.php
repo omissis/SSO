@@ -29,12 +29,17 @@ class Client
 
     public function getToken($ip, $agent, $email, $secret)
     {
-        list($ret, $body) = $this->request('sso/token', array(
-            'secret' => $secret,
-            'email'  => $email,
-            'agent'  => $agent,
-            'ip'     => $ip,
-        ));
+        try {
+            list($ret, $body) = $this->request('sso/token', array(
+                'secret' => $secret,
+                'email'  => $email,
+                'agent'  => $agent,
+                'ip'     => $ip,
+            ));
+        } catch (\RuntimeException $re) {
+            // #fail
+            return null;
+        }
 
         if (200 != $ret || empty($body)) {
             // #fail
@@ -48,10 +53,15 @@ class Client
 
     public function getUser($property, $username, $secret)
     {
-        list($ret, $body) = $this->request('sso/user', array(
-            $property => $username,
-            'secret'  => $secret,
-        ));
+        try {
+            list($ret, $body) = $this->request('sso/user', array(
+                $property => $username,
+                'secret'  => $secret,
+            ));
+        } catch (\RuntimeException $re) {
+            // #fail
+            return null;
+        }
 
         if (200 != $ret || empty($body)) {
             // #fail
@@ -123,8 +133,9 @@ class Client
 
         $body = curl_exec($curl);
         $ret = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
         if (curl_errno($curl) != 0) {
-            throw new \Exception("SSO failure: HTTP request to server failed. " . curl_error($curl));
+            throw new \RuntimeException("SSO failure: HTTP request to server failed. " . curl_error($curl));
         }
 
         return array($ret, $body);
