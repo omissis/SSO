@@ -3,6 +3,7 @@
 namespace Agavee\SSO;
 
 use Agavee\SSO\Client\XmlResponseParser;
+use Agavee\SSO\Exception\InvalidTokenException;
 
 class Client
 {
@@ -37,13 +38,11 @@ class Client
                 'ip'     => $ip,
             ));
         } catch (\RuntimeException $re) {
-            // #fail
-            return null;
+            throw new InvalidTokenException($re->getMessage());
         }
 
         if (200 != $ret || empty($body)) {
-            // #fail
-            return null;
+            throw new InvalidTokenException('Server returned an error');
         }
 
         $parser = new XmlResponseParser($body);
@@ -59,13 +58,11 @@ class Client
                 'secret'  => $secret,
             ));
         } catch (\RuntimeException $re) {
-            // #fail
-            return null;
+            throw new InvalidTokenException($re->getMessage());
         }
 
         if (200 != $ret || empty($body)) {
-            // #fail
-            return null;
+            throw new InvalidTokenException('Server returned an error');
         }
 
         $parser = new XmlResponseParser($body);
