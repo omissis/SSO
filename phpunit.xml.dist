@@ -10,7 +10,7 @@
     processIsolation            = "false"
     stopOnFailure               = "false"
     syntaxCheck                 = "true"
-    bootstrap                   = "vendor/.composer/autoload.php" >
+    bootstrap                   = "vendor/composer/autoload.php" >
 
     <testsuites>
         <testsuite name="Agavee SSO Test Suite">
